@@ -10,10 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      
       - name: Installing Dependencies
         run: |
-          pip3 install --upgrade pip
+          pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyflakes flake8
 
