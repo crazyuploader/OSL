@@ -9,8 +9,8 @@ try:
     import subprocess
     from time import sleep
     from tabulate import tabulate
-except:
-    print("Error While Importing Libraries")
+except ModuleNotFoundError:
+    print("Couldn't Import Libraries")
     print("Kindly run:")
     print("")
     print("\tpip install -r requirements.txt")
