@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
 
-from requests import get
-import xml.etree.ElementTree as ET
-from tcp_latency import measure_latency
-import socket
-import os
-import subprocess
-from time import sleep
+try:
+    from requests import get
+    import xml.etree.ElementTree as ET
+    from tcp_latency import measure_latency
+    import socket
+    import os
+    import subprocess
+    from time import sleep
+    from tabulate import tabulate
+except:
+    print("Error While Importing Libraries")
+    print("Kindly run:")
+    print("")
+    print("\tpip install -r requirements.txt")
+    print("")
+    print("Exiting...")
+    exit(1)
 
 
 current_dir = os.curdir
@@ -51,9 +61,10 @@ def parse_xml(filename):
 
 def hostname_to_ip(hostname):
     try:
-        return socket.gethostbyname(hostname)
-    except:
+        return [socket.gethostbyname(hostname), 0]
+    except socket.gaierror:
         print("Couldn't Resolve {}".format(hostname))
+        return ["", 1]
 
 
 def my_ip():
@@ -85,14 +96,32 @@ if __name__ == "__main__":
     print("Found {} Server(s)".format(len(hosts)))
     print("")
     print("Starting Latency Test")
+    pings = []
     for host in hosts:
         IP = hostname_to_ip(host)
-        print("Checking Latency for {} ({})".format(host, IP))
+        if IP[1] == 0:
+            print("Checking Latency for {} ({})".format(host, IP[0]))
+        else:
+            print("")
+            continue
         latency = test_latency(host)
         if latency is not None:
-            print("\t {} -> {:.2f} ms, {:.2f} ms, {:.2f} ms".format(IP, latency[0], latency[1], latency[2]))
+            try:
+                print("\t {} -> {:.2f} ms, {:.2f} ms, {:.2f} ms".format(IP[0], latency[0], latency[1], latency[2]))
+                ping = [host]
+                ping.append("{:.2f} ms".format(latency[0]))
+                ping.append("{:.2f} ms".format(latency[1]))
+                ping.append("{:.2f} ms".format(latency[2]))
+                pings.append(ping)
+            except TypeError:
+                print("Server Did Not Respond")
         else:
             print("Ping Test Failed")
+        print("")
     if os.path.exists("{}/servers.xml".format(current_dir)):
         os.remove("servers.xml")
-    print("Done!")
+    header = ["Hostname", "Ping #1", "Ping #2", "Ping #3"]
+    clear()
+    print("Summary")
+    print("")
+    print(tabulate(pings, headers=header))
