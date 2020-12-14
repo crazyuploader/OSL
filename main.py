@@ -13,8 +13,7 @@ from time import sleep
 def clear():
     # For Windows
     if name == "nt":
-        _ = subprocess.call("cls")
-
+        pass
     # For anything else (Linux, etc)
     else:
         _ = subprocess.call("/usr/bin/clear")
