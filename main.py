@@ -12,6 +12,7 @@ from time import sleep
 current_dir = os.curdir
 hosts = []
 
+
 # Function to Clear Console
 def clear():
     # For Windows
@@ -88,7 +89,7 @@ if __name__ == "__main__":
         IP = hostname_to_ip(host)
         print("Checking Latency for {} ({})".format(host, IP))
         latency = test_latency(host)
-        if latency != None:
+        if latency is not None:
             print("\t {} -> {:.2f} ms, {:.2f} ms, {:.2f} ms".format(IP, latency[0], latency[1], latency[2]))
         else:
             print("Ping Test Failed")
