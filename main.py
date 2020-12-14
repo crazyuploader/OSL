@@ -4,15 +4,18 @@ from requests import get
 import xml.etree.ElementTree as ET
 from tcp_latency import measure_latency
 import socket
-from os import name
+import os
 import subprocess
 from time import sleep
 
 
+current_dir = os.curdir
+hosts = []
+
 # Function to Clear Console
 def clear():
     # For Windows
-    if name == "nt":
+    if os.name == "nt":
         pass
     # For anything else (Linux, etc)
     else:
@@ -32,9 +35,10 @@ def get_xml():
 def write_xml_file(xml):
     print("")
     print("Writing XML file...")
-    file = open("servers.xml", "w")
+    file = open("{}/servers.xml".format(current_dir), "w")
     file.write(xml)
-    file.close
+    file.close()
+    print("{}/servers.xml".format(current_dir))
     print("")
     print("Wrote XML file to 'servers.xml'")
 
@@ -56,25 +60,38 @@ def my_ip():
     return data.text
 
 
+def xml_to_list(root):
+    global hosts
+    for type_tag in root.findall('servers/server'):
+        value = type_tag.get('host')
+        value = value.replace(":8080", "")
+        hosts.append(value)
+
+
+def test_latency(address):
+    return measure_latency(host=address, port=8080, runs=3, timeout=2.5)
+
+
 if __name__ == "__main__":
     XML = get_xml()
     write_xml_file(XML)
     sleep(1.5)
     clear()
-    print("Your IP: {}".format(my_ip()))
+    print("Your Public IP: {}".format(my_ip()))
     print("")
     root = parse_xml("servers.xml")
+    xml_to_list(root)
+    print("Found {} Server(s)".format(len(hosts)))
     print("")
     print("Starting Latency Test")
-    for type_tag in root.findall('servers/server'):
-        value = type_tag.get('host')
-        value = value.replace(":8080", "")
-        IP = hostname_to_ip(value)
-        print("Checking Latency for {} ({})".format(value, IP))
-        try:
-            latency = measure_latency(host=value, port=8080, runs=3, timeout=2.5)
-            print("Latency for {} ---> {:.2f} ms, {:.2f} ms, {:.2f} ms".format(IP, latency[0], latency[1], latency[2]))
-        except:
+    for host in hosts:
+        IP = hostname_to_ip(host)
+        print("Checking Latency for {} ({})".format(host, IP))
+        latency = test_latency(host)
+        if latency != None:
+            print("\t {} -> {:.2f} ms, {:.2f} ms, {:.2f} ms".format(IP, latency[0], latency[1], latency[2]))
+        else:
             print("Ping Test Failed")
-        print("")
+    if os.path.exists("{}/servers.xml".format(current_dir)):
+        os.remove("servers.xml")
     print("Done!")
