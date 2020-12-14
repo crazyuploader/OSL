@@ -46,7 +46,10 @@ def parse_xml(filename):
 
 
 def hostname_to_ip(hostname):
-    return socket.gethostbyname(hostname)
+    try:
+        return socket.gethostbyname(hostname)
+    except:
+        print("Couldn't Resolve {}".format(hostname))
 
 
 def my_ip():
@@ -68,8 +71,11 @@ if __name__ == "__main__":
         value = type_tag.get('host')
         value = value.replace(":8080", "")
         IP = hostname_to_ip(value)
-        print("Checking Ping for {} ({})".format(value, IP))
-        latency = measure_latency(host=value, port=8080, runs=3, timeout=2.5)
-        print("Ping for {} is = {:.2f} ms, {:.2f} ms, {:.2f} ms".format(IP, latency[0], latency[1], latency[2]))
+        print("Checking Latency for {} ({})".format(value, IP))
+        try:
+            latency = measure_latency(host=value, port=8080, runs=3, timeout=2.5)
+            print("Latency for {} ---> {:.2f} ms, {:.2f} ms, {:.2f} ms".format(IP, latency[0], latency[1], latency[2]))
+        except:
+            print("Ping Test Failed")
         print("")
     print("Done!")
