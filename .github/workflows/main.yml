@@ -26,7 +26,3 @@ jobs:
       - name: Check Program
         run: |
           curl -s https://raw.githubusercontent.com/crazyuploader/Bash/master/check_py.sh | bash -
-
-      - name: Run Program
-        run: |
-          python main.py
