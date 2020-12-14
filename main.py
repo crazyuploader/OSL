@@ -84,7 +84,7 @@ def test_latency(address):
     return measure_latency(host=address, port=8080, runs=3, timeout=2.5)
 
 
-if __name__ == "__main__":
+def main():
     XML = get_xml()
     write_xml_file(XML)
     sleep(1.5)
@@ -125,3 +125,7 @@ if __name__ == "__main__":
     print("Summary")
     print("")
     print(tabulate(pings, headers=header))
+
+
+if __name__ == "__main__":
+    main()
