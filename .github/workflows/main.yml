@@ -29,5 +29,4 @@ jobs:
       
       - name: Run Program
         run: |
-          chmod +x main.py
-          ./main.py
+          python main.py
