@@ -20,7 +20,7 @@ except ModuleNotFoundError:
 
 
 current_dir = os.curdir
-hosts = []
+servers = []
 
 
 # Function to Clear Console
@@ -73,11 +73,12 @@ def my_ip():
 
 
 def xml_to_list(root):
-    global hosts
+    global servers
     for type_tag in root.findall('servers/server'):
-        value = type_tag.get('host')
-        value = value.replace(":8080", "")
-        hosts.append(value)
+        hostname = type_tag.get('host')
+        hostname = hostname.replace(":8080", "")
+        server_id = type_tag.get('id')
+        servers.append([hostname, server_id])
 
 
 def test_latency(address):
@@ -93,23 +94,25 @@ def main():
     print("")
     root = parse_xml("servers.xml")
     xml_to_list(root)
-    print("Found {} Server(s)".format(len(hosts)))
+    print("Found {} Server(s)".format(len(servers)))
     print("")
     print("Starting Latency Test")
     pings = []
-    for host in hosts:
-        IP = hostname_to_ip(host)
+    for server in servers:
+        hostname = server[0]
+        server_id = server[1]
+        IP = hostname_to_ip(hostname)
         if IP[1] == 0:
-            print("Checking Latency for {} ({})".format(host, IP[0]))
+            print("Checking Latency for {} (id = {})".format(hostname, server_id))
         else:
             print("")
             continue
-        latency = test_latency(host)
+        latency = test_latency(hostname)
         if latency is not None:
             try:
                 average = (latency[0] + latency[1] + latency[2]) / 3
                 print("\t {} -> {:.2f} ms, {:.2f} ms, {:.2f} ms, avg = {:.2f} ms".format(IP[0], latency[0], latency[1], latency[2], average))
-                ping = [host]
+                ping = [hostname]
                 ping.append("{:.2f} ms".format(latency[0]))
                 ping.append("{:.2f} ms".format(latency[1]))
                 ping.append("{:.2f} ms".format(latency[2]))
