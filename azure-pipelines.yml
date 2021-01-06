@@ -1,0 +1,8 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+container: python:latest
+steps:
+- script: |
+    pip install -r requirements.txt
+    ./main.py
