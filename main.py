@@ -107,11 +107,13 @@ def main():
         latency = test_latency(host)
         if latency is not None:
             try:
-                print("\t {} -> {:.2f} ms, {:.2f} ms, {:.2f} ms".format(IP[0], latency[0], latency[1], latency[2]))
+                average = (latency[0] + latency[1] + latency[2]) / 3
+                print("\t {} -> {:.2f} ms, {:.2f} ms, {:.2f} ms, avg = {:.2f} ms".format(IP[0], latency[0], latency[1], latency[2], average))
                 ping = [host]
                 ping.append("{:.2f} ms".format(latency[0]))
                 ping.append("{:.2f} ms".format(latency[1]))
                 ping.append("{:.2f} ms".format(latency[2]))
+                ping.append("{:.2f} ms".format(average))
                 pings.append(ping)
             except TypeError:
                 print("Server Did Not Respond")
@@ -120,7 +122,7 @@ def main():
         print("")
     if os.path.exists("{}/servers.xml".format(current_dir)):
         os.remove("servers.xml")
-    header = ["Hostname", "Ping #1", "Ping #2", "Ping #3"]
+    header = ["Hostname", "Ping #1", "Ping #2", "Ping #3", "Average"]
     clear()
     print("Summary")
     print("")
