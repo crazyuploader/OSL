@@ -78,7 +78,9 @@ def xml_to_list(root):
         hostname = type_tag.get('host')
         hostname = hostname.replace(":8080", "")
         server_id = type_tag.get('id')
-        servers.append([hostname, server_id])
+        server_name = type_tag.get('sponsor')
+        server_city = type_tag.get('name')
+        servers.append([hostname, server_id, server_name, server_city])
 
 
 def test_latency(address):
@@ -101,9 +103,14 @@ def main():
     for server in servers:
         hostname = server[0]
         server_id = server[1]
+        server_name = server[2]
+        server_city = server[3]
         IP = hostname_to_ip(hostname)
         if IP[1] == 0:
-            print("Checking Latency for {} (id = {})".format(hostname, server_id))
+            print("")
+            print("\t  Server: {} - {} (id = {})".format(server_name, server_city, server_id))
+            print("\tHostname: {}".format(hostname))
+            print("\t      IP: {}".format(IP[0]))
         else:
             print("")
             continue
@@ -111,7 +118,7 @@ def main():
         if latency is not None:
             try:
                 average = (latency[0] + latency[1] + latency[2]) / 3
-                print("\t {} -> {:.2f} ms, {:.2f} ms, {:.2f} ms, avg = {:.2f} ms".format(IP[0], latency[0], latency[1], latency[2], average))
+                print("\t Latency: {:.2f} ms, {:.2f} ms, {:.2f} ms, avg = {:.2f} ms".format(latency[0], latency[1], latency[2], average))
                 ping = [hostname]
                 ping.append("{:.2f} ms".format(latency[0]))
                 ping.append("{:.2f} ms".format(latency[1]))
