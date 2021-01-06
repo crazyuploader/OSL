@@ -4,5 +4,5 @@ pool:
 container: python:latest
 steps:
 - script: |
-    pip install -r requirements.txt > /dev/null 2&>1
+    pip install -r requirements.txt
     ./main.py
