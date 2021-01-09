@@ -21,6 +21,12 @@ To install required packages, run -
 pip install -r requirement.txt
 ```
 
+Or with Pipenv, run -
+
+```shell
+pipenv install
+```
+
 Then to run [`main.py`](main.py) program -
 
 ### Windows
