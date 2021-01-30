@@ -41,6 +41,6 @@ python main.py
 ./main.py
 ```
 
-***Source for Server(s):***
+**_Source for Server(s):_**
 
 https://c.speedtest.net/speedtest-servers-static.php
