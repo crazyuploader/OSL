@@ -18,12 +18,6 @@ git clone https://github.com/crazyuploader/OSL.git
 To install required packages, run -
 
 ```shell
-pip install -r requirement.txt
-```
-
-Or with Pipenv, run -
-
-```shell
 pipenv install
 ```
 
