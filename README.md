@@ -19,6 +19,7 @@ To install required packages, run -
 
 ```shell
 pipenv install
+pipenv shell
 ```
 
 Then to run [`main.py`](main.py) program -
