@@ -8,7 +8,8 @@ jobs:
       - run:
           name: Installing Dependencies
           command: |
-            pip install -r requirements.txt
+            pip install pipenv
+            pipenv install --system
       - run:
           name: Running main.py
           command: |

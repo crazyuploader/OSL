@@ -1,3 +1,0 @@
-requests==2.25.1
-tcp-latency==0.0.10
-tabulate==0.8.9
