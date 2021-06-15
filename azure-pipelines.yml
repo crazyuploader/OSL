@@ -1,7 +1,7 @@
 pool:
   vmImage: "ubuntu-latest"
 
-container: python:latest
+container: "crazyuploader/python_build_tools:latest"
 steps:
   - script: |
       pip install pipenv
