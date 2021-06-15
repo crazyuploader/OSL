@@ -5,5 +5,6 @@ container: "crazyuploader/python_build_tools:latest"
 steps:
   - script: |
       pip install pipenv
+      PATH="${PATH}:/home/vsts_azpcontainer/.local/bin"
       pipenv install --system
       ./main.py
