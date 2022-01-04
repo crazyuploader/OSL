@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 requests = "==2.27.0"
-tcp-latency = "==0.0.10"
+tcp-latency = "==0.0.11"
 tabulate = "==0.8.9"
 
 [dev-packages]
