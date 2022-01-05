@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-requests = "==2.27.0"
+requests = "==2.27.1"
 tcp-latency = "==0.0.11"
 tabulate = "==0.8.9"
 
