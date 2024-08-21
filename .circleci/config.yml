@@ -9,7 +9,7 @@ jobs:
           name: Installing Dependencies
           command: |
             pip install pipenv --break-system-packages
-            pipenv install --system --break-system-packages
+            pipenv install --system
       - run:
           name: Running main.py
           command: |
