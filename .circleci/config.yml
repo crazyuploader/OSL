@@ -2,15 +2,15 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: "python:3.11-bookworm"
+      - image: "python:3.13-bookworm"
     steps:
       - checkout
       - run:
           name: Installing Dependencies
           command: |
             pip install pipenv
-            pipenv install --system
+            pipenv install
       - run:
           name: Running main.py
           command: |
-            python main.py
+            pipenv run python main.py
